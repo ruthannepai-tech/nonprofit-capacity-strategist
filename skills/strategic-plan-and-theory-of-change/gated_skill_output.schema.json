@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "claude-science/patient-org/gated-skill-output.schema.json",
+  "title": "Gated skill output envelope",
+  "description": "Every patient-org skill carrying hard/soft gates emits this envelope alongside its human-facing deliverable so gate-firing is machine-verifiable in acceptance tests (ledger O11).",
+  "type": "object",
+  "required": [
+    "skill",
+    "status",
+    "gates_fired",
+    "deliverable_ref"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "skill": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "stopped_at_hard_gate",
+        "completed_with_caveats"
+      ],
+      "description": "stopped_at_hard_gate MUST be used whenever any H-* gate fired."
+    },
+    "gates_fired": {
+      "type": "array",
+      "description": "Every gate this run tripped. REQUIRED even when empty ([] for a clean happy path).",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "where",
+          "evidence"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "H-VERIFY",
+              "H-SCOPE",
+              "H-IRREVERSIBLE",
+              "H-SAFETY",
+              "H-COUNSEL",
+              "H-COMPUTE",
+              "S-CONFIDENCE",
+              "S-ASSUMPTION",
+              "S-LABEL",
+              "S-TIER",
+              "S-NEUTRAL"
+            ]
+          },
+          "where": {
+            "type": "string",
+            "description": "Pipeline stage or output section where the gate tripped."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Specific trigger, e.g. 'HIPAA posture not in public docs for Platform X'."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "stopped_for_human",
+              "marked_unknown",
+              "labeled",
+              "tiered_options",
+              "logged_assumption",
+              "returned_decision_to_org"
+            ]
+          }
+        }
+      }
+    },
+    "deliverable_ref": {
+      "type": "string",
+      "description": "Artifact filename/id of the human-facing deliverable."
+    },
+    "unknowns_flagged": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "S-NEUTRAL skills: count of capability cells marked UNKNOWN."
+    },
+    "ranking_present": {
+      "type": "boolean",
+      "description": "S-NEUTRAL skills: MUST be false; true fails the neutrality acceptance test."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "stopped_at_hard_gate"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "gates_fired": {
+            "minItems": 1,
+            "contains": {
+              "properties": {
+                "code": {
+                  "pattern": "^H-"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

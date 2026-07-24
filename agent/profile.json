@@ -1,0 +1,8 @@
+{
+  "name": "NONPROFIT_CAPACITY_STRATEGIST",
+  "displayName": "Nonprofit Capacity Strategist",
+  "description": "Helps a patient-led nonprofit build organizational backbone \u2014 governance/board, legal-entity & compliance, strategic plan & theory of change, and staffing/volunteer scaling. Office/operational decision-support for a non-scientist leader; not legal advice.",
+  "iconKey": "lightning",
+  "colorKey": "accent-main",
+  "unrestricted": true
+}

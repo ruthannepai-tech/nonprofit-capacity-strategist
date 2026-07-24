@@ -1,0 +1,29 @@
+{
+  "agent": "NONPROFIT_CAPACITY_STRATEGIST",
+  "skills": {
+    "governance-and-board-builder": {
+      "SKILL.md": 6848,
+      "kernel.py": 4131,
+      "gated_skill_output.schema.json": 3245,
+      "tests/acceptance_cases.json": 4692
+    },
+    "legal-entity-and-compliance-navigator": {
+      "SKILL.md": 7826,
+      "kernel.py": 4131,
+      "gated_skill_output.schema.json": 3245,
+      "tests/acceptance_cases.json": 4448
+    },
+    "strategic-plan-and-theory-of-change": {
+      "SKILL.md": 6244,
+      "kernel.py": 4131,
+      "gated_skill_output.schema.json": 3245,
+      "tests/acceptance_cases.json": 3969
+    },
+    "staffing-and-volunteer-scaling": {
+      "SKILL.md": 6411,
+      "kernel.py": 4131,
+      "gated_skill_output.schema.json": 3245,
+      "tests/acceptance_cases.json": 3969
+    }
+  }
+}
